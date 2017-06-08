@@ -9,5 +9,6 @@ namespace RatherWeird
     public static class Constants
     {
         public static readonly string SettingsFile = "settings.xml";
+        public static readonly string CncOnlineInfo = "http://info.server.cnc-online.net/";
     }
 }

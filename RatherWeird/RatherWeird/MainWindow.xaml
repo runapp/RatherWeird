@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RatherWeird"
         mc:Ignorable="d"
-        Title="RatherWeird" Height="197" Width="534" Loaded="Window_Loaded" Closed="Window_Closed" ResizeMode="NoResize">
+        Title="RatherWeird" Height="197" Width="534" Loaded="Window_Loaded" Closed="Window_Closed" ResizeMode="NoResize" Closing="Window_Closing">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -36,6 +36,7 @@
                 <TextBox x:Name="txtRa3Path" HorizontalAlignment="Left" Height="23" Margin="10,9,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="290" TextChanged="txtRa3Path_TextChanged" IsEnabled="False" Grid.Row="1"/>
                 <Button x:Name="btnLaunchRa3" Content="Launch RA3" HorizontalAlignment="Left" Margin="10,1,0,0" Width="97" Cursor="" Click="btnLaunchRa3_Click" Grid.Row="2" Height="34" VerticalAlignment="Top"/>
                 <Label x:Name="lblVersion" Content="Version: 0.2.0" Margin="0,10,10,0" Grid.Row="2" IsEnabled="False" Height="26" VerticalAlignment="Top" HorizontalAlignment="Right" Width="80"/>
+                <Button Content="Button" HorizontalAlignment="Left" Margin="150,17,0,0" Grid.Row="2" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
             </Grid>
         </GroupBox>
     </Grid>

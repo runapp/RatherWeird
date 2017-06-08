@@ -30,6 +30,7 @@ namespace RatherWeird
     /// </summary>
     public partial class MainWindow : Window
     {
+        private readonly Playerlist _playerlist = new Playerlist();
         private readonly ForegroundWatcher _foregroundWatcher = new ForegroundWatcher();
         private readonly KeyboardWatcher _keyboardWatcher = new KeyboardWatcher();
         
@@ -259,6 +260,17 @@ namespace RatherWeird
         {
             var adhocSender = sender as CheckBox;
             settings.HookNumpadEnter = adhocSender?.IsChecked == true;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            
+            _playerlist.Show();
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            _playerlist.Close();
         }
     }
 }

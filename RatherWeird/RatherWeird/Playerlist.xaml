@@ -6,9 +6,25 @@
         xmlns:local="clr-namespace:RatherWeird"
         mc:Ignorable="d"
         Title="Playerlist" Height="298.958" Width="592.708" Loaded="Window_Loaded" Deactivated="Window_Deactivated" Activated="Window_Activated" Closed="Window_Closed">
+    <Window.Resources>
+        <Style TargetType="ListBoxItem">
+            <Style.Triggers>
+                <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                    <Setter Property="Background" Value="WhiteSmoke"></Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
     <Grid>
         <Grid Margin="0,0,0,0">
-            <ListBox x:Name="lstPlayers" HorizontalAlignment="Left" Height="209" Margin="10,41,0,0" VerticalAlignment="Top" Width="277"/>
+            <ListBox x:Name="lstPlayers" HorizontalAlignment="Left" Height="209" Margin="10,41,0,0" VerticalAlignment="Top" Width="277" FontSize="14" AlternationCount="2">
+                <ListBox.Resources>
+                    <DataTemplate DataType="{x:Type local:Player}">
+                        <TextBlock Text="{Binding Nickname}">
+                        </TextBlock>
+                    </DataTemplate>
+                </ListBox.Resources>
+            </ListBox>
         </Grid>
 
     </Grid>

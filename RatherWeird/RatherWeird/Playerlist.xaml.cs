@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,15 +23,34 @@ namespace RatherWeird
     /// </summary>
     public partial class Playerlist : Window
     {
+        public Players Players = new Players();
 
         private readonly DispatcherTimer _refreshContentFromWeb = new DispatcherTimer();
         private HwndSource _hwndMyself;
+
         public Playerlist()
         {
             InitializeComponent();
 
             _refreshContentFromWeb.Interval = TimeSpan.FromSeconds(1);
             _refreshContentFromWeb.Tick += Tmr_Tick;
+
+            Players.CollectionChanged += Players_CollectionChanged;
+
+            DataContext = this;
+        }
+
+        private void Players_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (e.OldItems == null)
+            {
+                Title = $"0 -> {e.NewItems.Count}";
+            }
+            else
+            {
+                Title = $"{e.OldItems.Count} -> {e.NewItems.Count}";
+            }
+            
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -38,17 +59,15 @@ namespace RatherWeird
             _hwndMyself?.AddHook(WindowProc);
 
             _refreshContentFromWeb.Start();
+
+            lstPlayers.ItemsSource = Players;
         }
 
         private async void Tmr_Tick(object sender, EventArgs e)
         {
             Game ra3 = await CncOnlineInfo.FetchRa3(Constants.CncOnlineInfo);
-            
-            lstPlayers.Items.Clear();
-            foreach (var ra3User in ra3.Users)
-            {
-                lstPlayers.Items.Add(ra3User.Key);
-            }
+
+            // mh... Need to check the diff of Players <-> ra3.Users and ra3.Users and Players to add/remove entries to the list
         }
 
         private void Window_Deactivated(object sender, EventArgs e)
@@ -89,5 +108,13 @@ namespace RatherWeird
             _hwndMyself?.RemoveHook(WindowProc);
         }
        
+    }
+    
+    public class Players : ObservableCollection<Player>
+    {
+        public Players()
+        {
+            
+        }
     }
 }

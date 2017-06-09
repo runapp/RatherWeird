@@ -131,16 +131,30 @@ namespace RatherWeird
     }
 
     [DataContract]
-    public class Player
+    public class Player : INotifyPropertyChanged
     {
+        private string _nickname;
         [DataMember(Name = "id")]
         public int Id { get; set; }
 
         [DataMember(Name = "nickname")]
-        public string Nickname { get; set; }
+        public string Nickname
+        {
+            get { return _nickname; }
+            set
+            {
+                if (_nickname != value)
+                {
+                    _nickname = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Nickname"));
+                }
+            }
+        }
 
         [DataMember(Name = "pid")]
         public int Pid { get; set; }
+
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 
     public class CncOnlineInfo

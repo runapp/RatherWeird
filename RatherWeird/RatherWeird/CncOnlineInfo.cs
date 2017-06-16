@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -11,6 +12,10 @@ using System.Threading.Tasks;
 
 namespace RatherWeird
 {
+    public class Users : ObservableCollection<Player>
+    {
+    }
+
     [DataContract]
     public class SerializedData
     {
@@ -131,7 +136,7 @@ namespace RatherWeird
     }
 
     [DataContract]
-    public class Player : INotifyPropertyChanged
+    public class Player : INotifyPropertyChanged, IEquatable<Player>, IComparable<Player>
     {
         private string _nickname;
         [DataMember(Name = "id")]
@@ -155,6 +160,21 @@ namespace RatherWeird
         public int Pid { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public int CompareTo(Player other)
+        {
+            return String.Compare(Nickname, other.Nickname, StringComparison.Ordinal);
+        }
+
+        public bool Equals(Player other)
+        {
+            if (other == null)
+                return false;
+
+            return other.Id == Id &&
+                   other.Pid == Pid &&
+                   other.Nickname == Nickname;
+        }
     }
 
     public class CncOnlineInfo
@@ -186,7 +206,7 @@ namespace RatherWeird
                 });
                 
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return null;
             }
@@ -197,6 +217,36 @@ namespace RatherWeird
         {
             SerializedData everything = await FetchEverything(url);
             return everything.Ra3;
+        }
+
+        public static async void RefreshUsers(string url, Users userlist)
+        {
+            SerializedData everything = await FetchEverything(url);
+
+            if (userlist == null)
+            {
+                userlist = new Users();
+            }
+
+            foreach (var ra3User in everything.Ra3.Users)
+            {
+                if (!userlist.Contains(ra3User.Value))
+                    userlist.Add(ra3User.Value);
+            }
+            
+            List<Player> playersToBeRemoved = new List<Player>();
+            foreach (var user in userlist)
+            {
+                if (!everything.Ra3.Users.ContainsValue(user))
+                {
+                    playersToBeRemoved.Add(user);
+                }
+            }
+
+            foreach (var playerToBeRemoved in playersToBeRemoved)
+            {
+                userlist.Remove(playerToBeRemoved);
+            }
         }
     }
 }

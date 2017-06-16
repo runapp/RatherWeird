@@ -23,7 +23,7 @@ namespace RatherWeird
     /// </summary>
     public partial class Playerlist : Window
     {
-        public Players Players = new Players();
+        public Users Players = new Users();
 
         private readonly DispatcherTimer _refreshContentFromWeb = new DispatcherTimer();
         private HwndSource _hwndMyself;
@@ -35,22 +35,7 @@ namespace RatherWeird
             _refreshContentFromWeb.Interval = TimeSpan.FromSeconds(1);
             _refreshContentFromWeb.Tick += Tmr_Tick;
 
-            Players.CollectionChanged += Players_CollectionChanged;
-
             DataContext = this;
-        }
-
-        private void Players_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            if (e.OldItems == null)
-            {
-                Title = $"0 -> {e.NewItems.Count}";
-            }
-            else
-            {
-                Title = $"{e.OldItems.Count} -> {e.NewItems.Count}";
-            }
-            
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -66,8 +51,8 @@ namespace RatherWeird
         private async void Tmr_Tick(object sender, EventArgs e)
         {
             Game ra3 = await CncOnlineInfo.FetchRa3(Constants.CncOnlineInfo);
-
-            // mh... Need to check the diff of Players <-> ra3.Users and ra3.Users and Players to add/remove entries to the list
+            
+            CncOnlineInfo.RefreshUsers(Constants.CncOnlineInfo, Players);
         }
 
         private void Window_Deactivated(object sender, EventArgs e)
@@ -107,14 +92,35 @@ namespace RatherWeird
         {
             _hwndMyself?.RemoveHook(WindowProc);
         }
-       
-    }
-    
-    public class Players : ObservableCollection<Player>
-    {
-        public Players()
+
+        private void MenuItem_OnClick(object sender, RoutedEventArgs e)
         {
-            
+            if (lstPlayers.SelectedItems.Count <= 0)
+                return;
+
+            Player selectedPlayer = lstPlayers.SelectedItems[0] as Player;
+            if (selectedPlayer == null)
+                return;
+
+            Title = selectedPlayer.Nickname;
+        }
+        
+        private void lstPlayers_ContextMenuOpening(object sender, ContextMenuEventArgs e)
+        {
+            ListBox box = sender as ListBox;
+
+            if (box == null)
+                return;
+
+            if (box.SelectedItems.Count <= 0)
+                return;
+
+            Player selectedPlayer = box.SelectedItems[0] as Player;
+
+            if (selectedPlayer == null)
+                return;
+
+            miWatchPlayer.Header = $"Watch {selectedPlayer.Nickname}";
         }
     }
 }

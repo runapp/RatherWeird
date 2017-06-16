@@ -17,13 +17,18 @@
     </Window.Resources>
     <Grid>
         <Grid Margin="0,0,0,0">
-            <ListBox x:Name="lstPlayers" HorizontalAlignment="Left" Height="209" Margin="10,41,0,0" VerticalAlignment="Top" Width="277" FontSize="14" AlternationCount="2">
+            <ListBox x:Name="lstPlayers" HorizontalAlignment="Left" Height="209" Margin="10,41,0,0" VerticalAlignment="Top" Width="277" FontSize="14" AlternationCount="2" ContextMenuOpening="lstPlayers_ContextMenuOpening">
                 <ListBox.Resources>
                     <DataTemplate DataType="{x:Type local:Player}">
                         <TextBlock Text="{Binding Nickname}">
                         </TextBlock>
                     </DataTemplate>
                 </ListBox.Resources>
+                <ListBox.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Name="miWatchPlayer" Header="Watch Player" Click="MenuItem_OnClick"></MenuItem>
+                    </ContextMenu>
+                </ListBox.ContextMenu>
             </ListBox>
         </Grid>
 

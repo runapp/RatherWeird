@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
@@ -108,6 +109,8 @@ namespace RatherWeird
             tmr.Tick += Tmr_Tick;
             tmr.Interval = new TimeSpan(0, 0, 0, 1);
             tmr.Start();
+
+            _playerlist.Show();
         }
 
         private void _keyboardWatcher_KeyboardInputChanged(object sender, KeyboardInputArgs e)

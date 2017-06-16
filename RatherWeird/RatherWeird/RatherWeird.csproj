@@ -68,6 +68,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="CncOnlineInfo.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="Playerlist.xaml.cs">
       <DependentUpon>Playerlist.xaml</DependentUpon>
     </Compile>

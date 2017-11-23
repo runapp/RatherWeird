@@ -72,12 +72,18 @@ namespace RatherWeird
 
             if (settings.RefreshPathToRa3)
             {
-                // Dirty?
-                string manualPath = Path.Combine(
-                    Path.GetDirectoryName(Path.GetDirectoryName(e.Process.MainModule.FileName))
-                    , "RA3.exe"
-                );
-                txtRa3Path.Text = manualPath;
+                try
+                {
+                    // Dirty?
+                    string manualPath = Path.Combine(
+                        Path.GetDirectoryName(Path.GetDirectoryName(e.Process.MainModule.FileName))
+                        , "RA3.exe"
+                    );
+                    txtRa3Path.Text = manualPath;
+                }catch(Exception err)
+                {
+                    err = err ;
+                }
             }
         }
 
